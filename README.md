@@ -37,212 +37,69 @@ This project implements a secure JWT (JSON Web Token) and API Key based authenti
    ```bash
    git clone https://github.com/your-username/jwt-auth-api.git
    cd jwt-auth-api
+## Create a Virtual Environment and Activate It:
 
-Create a virtual environment:
+1. **Create a virtual environment**:
 
-bash
-Copy
-Edit
-python -m venv venv
-Activate the virtual environment:
+   ```bash
+   python -m venv venv
+   ```
 
-On Windows:
+2. **Activate the virtual environment**:
 
-bash
-Copy
-Edit
-venv\Scripts\activate
-On macOS/Linux:
+   - On **Windows**:
+     ```bash
+     venv\Scripts\activate
+     ```
 
-bash
-Copy
-Edit
-source venv/bin/activate
-Install dependencies:
+   - On **macOS/Linux**:
+     ```bash
+     source venv/bin/activate
+     ```
 
-bash
-Copy
-Edit
+## Install Dependencies:
+
+```bash
 pip install -r requirements.txt
-Run the Flask app:
+```
 
-bash
-Copy
-Edit
+## Run the Flask App:
+
+```bash
 python jwt_auth_api.py
-The app should now be running at http://127.0.0.1:5000.
+```
 
-Using Postman with the JWT Auth API
-1. Setting Up Postman
-Requirements:
+The app should now be running at [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-Postman installed
+## Using Postman with the JWT Auth API
 
-Flask app running with: python jwt_auth_api.py
+You can use Postman to interact with the API. Below are the steps for testing the endpoints.
 
-Base URL: http://127.0.0.1:5000
+1. **Register a new user** (POST request to `/register`).
+2. **Login to receive a JWT token** (POST request to `/login`).
+3. **Use the received JWT token to access protected routes**.
+4. **Admin route for viewing all users** (GET request to `/admin/users`).
 
-2. Testing User Registration
-Method: POST
-URL: http://127.0.0.1:5000/signup
+### Example Usage
 
-Headers:
+1. **Register a user:**
 
-Key: Content-Type
+   ```bash
+   curl -X POST -H "Content-Type: application/json" -d '{"username": "testuser", "password": "testpassword"}' http://127.0.0.1:5000/register
+   ```
 
-Value: application/json
+2. **Login with credentials:**
 
-Body (raw, JSON):
+   ```bash
+   curl -X POST -H "Content-Type: application/json" -d '{"username": "testuser", "password": "testpassword"}' http://127.0.0.1:5000/login
+   ```
 
-json
-Copy
-Edit
-{
-    "username": "testuser",
-    "password": "testpassword"
-}
-Expected Response (201):
+3. **Access a protected route:**
 
-json
-Copy
-Edit
-{
-    "message": "User created successfully!",
-    "api_key": "your-generated-api-key"
-}
-3. Testing Login (JWT Token Generation)
-Option 1: Basic Auth Login
-Method: POST
-URL: http://127.0.0.1:5000/login
+   ```bash
+   curl -X GET -H "Authorization: Bearer <your-jwt-token>" http://127.0.0.1:5000/protected
+   ```
 
-Auth: Basic Auth
-Username: testuser
-Password: testpassword
+## License
 
-Expected Response:
-
-json
-Copy
-Edit
-{
-    "token": "your-jwt-token",
-    "api_key": "your-api-key"
-}
-Option 2: JSON Login
-Method: POST
-URL: http://127.0.0.1:5000/login/json
-
-Headers:
-
-Key: Content-Type
-
-Value: application/json
-
-Body (raw, JSON):
-
-json
-Copy
-Edit
-{
-    "username": "testuser",
-    "password": "testpassword"
-}
-Expected Response:
-
-json
-Copy
-Edit
-{
-    "token": "your-jwt-token",
-    "api_key": "your-api-key"
-}
-4. Testing JWT Protected Route
-Method: GET
-URL: http://127.0.0.1:5000/jwt/test
-
-Headers:
-
-Key: x-access-token
-
-Value: your-jwt-token
-
-Expected Response:
-
-json
-Copy
-Edit
-{
-    "message": "Hello testuser! You accessed this endpoint using your JWT token."
-}
-5. Testing API Key Protected Route
-Method: GET
-URL: http://127.0.0.1:5000/api/test
-
-Headers:
-
-Key: x-api-key
-
-Value: your-api-key
-
-Expected Response:
-
-json
-Copy
-Edit
-{
-    "message": "Hello testuser! You accessed this endpoint using your API key."
-}
-6. Testing Admin Routes
-Login as Admin
-Method: POST
-URL: http://127.0.0.1:5000/login
-
-Auth: Basic Auth
-Username: admin
-Password: admin
-
-Save the admin JWT token from the response.
-
-Get All Users (Admin Only)
-Method: GET
-URL: http://127.0.0.1:5000/admin/users
-
-Headers:
-
-Key: x-access-token
-
-Value: admin-jwt-token
-
-Expected Response:
-List of registered users
-
-7. Optional: Postman Collection Setup
-Create a Postman Collection and save all the above requests.
-
-Set environment variables in Postman:
-
-base_url: http://127.0.0.1:5000
-
-jwt_token
-
-api_key
-
-Use them in URLs and headers like:
-
-{{base_url}}/signup
-
-Header: x-access-token: {{jwt_token}}
-
-Header: x-api-key: {{api_key}}
-
-Requirements
-Create a requirements.txt file for the dependencies:
-
-ini
-Copy
-Edit
-Flask==2.3.2
-Flask-SQLAlchemy==3.1.1
-PyJWT==2.8.0
-Werkzeug==2.3.7
-
+This project is licensed under the MIT License - see the LICENSE file for details.
